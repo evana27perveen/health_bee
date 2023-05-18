@@ -28,15 +28,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#3180e7',
     padding: 10,
     zIndex: 999,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 40,
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 40,
+    marginBottom: 2,
+    marginRight: 15,
   },
   dropdownItem: {
     color: 'white',
     fontSize: 16,
     padding: 8,
+    fontWeight: 'bold',
   },
 });
 

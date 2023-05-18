@@ -76,7 +76,7 @@ const Cards = () => {
   return (
     <View>
       <ImageBackground
-        source={require('../../../assets/images/blood.png')}
+        source={require('../../../assets/images/bloodb.png')}
         style={styles.backgroundImage}
         imageStyle={{ opacity: 0.7, marginTop: 10 }}
       >

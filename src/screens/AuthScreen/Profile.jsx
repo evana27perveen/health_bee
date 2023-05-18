@@ -5,6 +5,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import { useCookies } from 'react-cookie';
 import Header from '../HomeScreen/Header'
 import BottomNavBar from '../HomeScreen/BottomNavBar';
+import ProfileDisplay from './ProfileDisplay';
 
 const Profile = () => {
   const [fullName, setFullName] = useState('');
@@ -20,7 +21,7 @@ const Profile = () => {
     const formData = new FormData();
     formData.append('full_name', fullName);
     formData.append('gender', gender);
-    formData.append('dob', dob);
+    formData.append('dob', dob.toISOString().slice(0, 10));
     formData.append('email', email);
     formData.append('phone_number', phoneNumber);
     fetch('http://192.168.0.106:8000/api/main/patient-profiles/', {
@@ -45,12 +46,15 @@ const Profile = () => {
     const currentDate = selectedDate || dob;
     setShowDatePicker(false);
     setDob(currentDate);
+    console.log(dob);
   };
 
   return (
     <View style={{ flex: 1, margin: 5, flexDirection: 'column'}}>
       <Header title="Profile"/>
-    <View style={styles.container}>
+      <ProfileDisplay/>
+
+    {/* <View style={styles.container}>
       <Text style={styles.title}>Create Profile</Text>
       <View style={styles.inputContainer}>
         <TextInput
@@ -116,7 +120,7 @@ const Profile = () => {
           onPress={createProfile}
         />
       </View>
-    </View>
+    </View> */}
     <BottomNavBar/>
     </View>
   );
