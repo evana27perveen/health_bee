@@ -1,9 +1,24 @@
 from rest_framework import viewsets, permissions, generics
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from App_main.models import *
 from App_main.serializers import *
 
+
+class ProfileExistOrNot(viewsets.ModelViewSet):
+    queryset = PatientProfile.objects.all()
+    serializer_class = PatientProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=False, methods=['get'])
+    def check_existence(self, request):
+        user = request.user
+        try:
+            profile = self.queryset.get(user=user)
+            return Response({"profile": "True"})
+        except PatientProfile.DoesNotExist:
+            return Response({"profile": "False"})
 
 class PatientProfileViewSet(viewsets.ModelViewSet):
     queryset = PatientProfile.objects.all()
