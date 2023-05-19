@@ -17,8 +17,17 @@ class ServiceModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ServiceCartModelSerializer(serializers.ModelSerializer):
+    services = ServiceModelSerializer(many=True)
+
+    class Meta:
+        model = ServiceCartModel
+        fields = '__all__'
+
+
 class AppointmentSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    service = ServiceCartModelSerializer()
 
     class Meta:
         model = Appointment

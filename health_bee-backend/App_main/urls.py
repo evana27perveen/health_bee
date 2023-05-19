@@ -8,7 +8,6 @@ urlpatterns = [
     path('patient-profiles/', PatientProfileViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('patient-profiles/<int:pk>/',
          PatientProfileViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
-     path('profile-exists-or-not/', ProfileExistOrNot.as_view()),
     path('appointments/', AppointmentViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('appointments/<int:pk>/',
          AppointmentViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
@@ -21,4 +20,5 @@ urlpatterns = [
     path('service-models/', ServiceModelListCreateView.as_view(), name='service-model-list-create'),
     path('service-models/<int:pk>/', ServiceModelRetrieveUpdateDestroyView.as_view(),
          name='service-model-retrieve-update-destroy'),
+     path('user-home-data/', UserHomeData.as_view(), name='user-home-data'),
 ]

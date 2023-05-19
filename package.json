@@ -20,6 +20,7 @@
     "react-native": "0.71.8",
     "react-native-datepicker": "^1.7.2",
     "react-native-nav": "^2.0.2",
+    "react-native-table-component": "^1.2.2",
     "sweetalert2": "^11.7.5"
   },
   "devDependencies": {

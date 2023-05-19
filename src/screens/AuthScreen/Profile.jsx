@@ -16,6 +16,7 @@ const Profile = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [token] = useCookies(['myToken']);
   const [group] = useCookies(['myGroup']);
+  
 
   const createProfile = () => {
     const formData = new FormData();
@@ -52,75 +53,81 @@ const Profile = () => {
   return (
     <View style={{ flex: 1, margin: 5, flexDirection: 'column'}}>
       <Header title="Profile"/>
-      <ProfileDisplay/>
-
-    {/* <View style={styles.container}>
-      <Text style={styles.title}>Create Profile</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Full Name"
-          value={fullName}
-          onChangeText={setFullName}
-        />
-        <View style={styles.radioGroup}>
-          <Text style={styles.radioLabel}>Gender:</Text>
-          <TouchableOpacity
-            style={gender === 'M' ? styles.radioButtonActive : styles.radioButton}
-            onPress={() => setGender('M')}
-          >
-            <Text style={styles.radioButtonText}>Male</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={gender === 'F' ? styles.radioButtonActive : styles.radioButton}
-            onPress={() => setGender('F')}
-          >
-            <Text style={styles.radioButtonText}>Female</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={gender === 'O' ? styles.radioButtonActive : styles.radioButton}
-            onPress={() => setGender('O')}
-          >
-            <Text style={styles.radioButtonText}>Other</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={styles.dateButton}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text style={styles.dateButtonText}>
-            {dob.toLocaleDateString()}
-          </Text>
-          <View style={styles.iconContainer}>
-          <Fontisto name="date" size={24} color="#fff" />
+      {token.profile === 'True' ? (
+      <ProfileDisplay />
+    ) : (
+      <View style={styles.container}>
+          <Text style={styles.title}>Create Profile</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Full Name"
+              value={fullName}
+              onChangeText={setFullName}
+            />
+            <View style={styles.radioGroup}>
+              <Text style={styles.radioLabel}>Gender:</Text>
+              <TouchableOpacity
+                style={gender === 'M' ? styles.radioButtonActive : styles.radioButton}
+                onPress={() => setGender('M')}
+              >
+                <Text style={styles.radioButtonText}>Male</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={gender === 'F' ? styles.radioButtonActive : styles.radioButton}
+                onPress={() => setGender('F')}
+              >
+                <Text style={styles.radioButtonText}>Female</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={gender === 'O' ? styles.radioButtonActive : styles.radioButton}
+                onPress={() => setGender('O')}
+              >
+                <Text style={styles.radioButtonText}>Other</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styles.dateButton}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Text style={styles.dateButtonText}>
+                {dob.toLocaleDateString()}
+              </Text>
+              <View style={styles.iconContainer}>
+              <Fontisto name="date" size={24} color="#fff" />
+              </View>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                value={dob}
+                mode="date"
+                display="default"
+                onChange={handleDateChange}
+              />
+            )}
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+            />
+            <Button
+              title="Create Profile"
+              onPress={createProfile}
+            />
           </View>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={dob}
-            mode="date"
-            display="default"
-            onChange={handleDateChange}
-          />
-        )}
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-        />
-        <Button
-          title="Create Profile"
-          onPress={createProfile}
-        />
-      </View>
-    </View> */}
+        </View>
+    )}
+        
+      
+
+    
     <BottomNavBar/>
     </View>
   );

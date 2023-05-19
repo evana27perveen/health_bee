@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './src/screens/AuthScreen/SignUp';
 import Login from './src/screens/AuthScreen/Login';
 import Profile from './src/screens/AuthScreen/Profile';
+import ProfileUpdate from './src/screens/AuthScreen/ProfileUpdate';
 import Home from './src/screens/HomeScreen/Home';
 import Services from './src/screens/ServiceScreen/Services';
 
@@ -25,6 +26,7 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="Services" component={Services} options={{ headerShown: false }} />
           <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+          <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator, Animated, ImageBackground, TouchableOpacity } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useCookies } from 'react-cookie';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileDisplay = () => {
-  
   const [token] = useCookies(['myToken']);
-  const [group] = useCookies(['myGroup']);
   const [profile, setProfile] = useState(null);
+  const navigation = useNavigation();
+  const fadeAnim = useState(new Animated.Value(0))[0];
+  const translateAnim = useState(new Animated.Value(100))[0];
 
   useEffect(() => {
     fetchProfileData();
   }, []);
 
   const fetchProfileData = () => {
-    // Fetch profile data from the API
     fetch('http://192.168.0.106:8000/api/main/patient-profiles/', {
       method: 'GET',
       headers: {
@@ -25,9 +27,9 @@ const ProfileDisplay = () => {
       .then(response => response.json())
       .then(data => {
         if (data.length > 0) {
-            console.log(data);
           const profile = data[0];
           setProfile(profile);
+          startAnimations();
         }
       })
       .catch(error => {
@@ -35,28 +37,77 @@ const ProfileDisplay = () => {
       });
   };
 
+  const startAnimations = () => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const handleEditProfile = () => {
+    // Implement your edit profile logic here
+    console.log('Edit Profile');
+  };
+
   if (!profile) {
     return (
       <View style={styles.container}>
-        <Text>Loading profile...</Text>
+        <ActivityIndicator size="large" color="#3180e7" />
+        <Text style={styles.loadingText}>Loading profile...</Text>
       </View>
     );
   }
 
+  const getGenderText = () => {
+    if (profile.gender === 'M') {
+      return 'Male';
+    } else if (profile.gender === 'F') {
+      return 'Female';
+    } else {
+      return 'Undefined';
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile Information</Text>
-      <Text style={styles.label}>Full Name:</Text>
-      <Text style={styles.value}>{profile.full_name}</Text>
-      <Text style={styles.label}>Gender:</Text>
-      <Text style={styles.value}>{profile.gender}</Text>
-      <Text style={styles.label}>Date of Birth:</Text>
-      <Text style={styles.value}>{profile.dob}</Text>
-      <Text style={styles.label}>Email:</Text>
-      <Text style={styles.value}>{profile.email}</Text>
-      <Text style={styles.label}>Phone Number:</Text>
-      <Text style={styles.value}>{profile.phone_number}</Text>
-    </View>
+    <ImageBackground source={require('../../../assets/images/proback.jpg')} style={styles.container}>
+      <Animated.View style={[styles.cardContainer, { opacity: fadeAnim, transform: [{ translateY: translateAnim }] }]}>
+        <Text style={styles.title}>Profile Information</Text>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Full Name:</Text>
+          <Text style={styles.value}>{profile.full_name}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Gender:</Text>
+          <Text style={styles.value}>{getGenderText()}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Date of Birth:</Text>
+          <Text style={styles.value}>{profile.dob}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.value}>{profile.email}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Phone Number:</Text>
+          <Text style={styles.value}>{profile.phone_number}</Text>
+        </View>
+        <TouchableOpacity onPress={() => navigation.navigate('ProfileUpdate')} style={styles.editButton}>
+          <View style={styles.editButtonContent}>
+            <MaterialCommunityIcons name="account-edit" size={25} color="white" style={styles.icon} />
+            <Text style={styles.editButtonText}>Edit Profile</Text>
+          </View>
+        </TouchableOpacity>
+      </Animated.View>
+    </ImageBackground>
   );
 };
 
@@ -65,24 +116,59 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+  },
+  cardContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 8,
     padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 24,
+    textAlign: 'center',
+  },
+  infoContainer: {
+    marginBottom: 16,
   },
   label: {
     fontSize: 18,
-    marginBottom: 8,
+    marginBottom: 4,
+    textAlign: 'center',
   },
   value: {
     fontSize: 16,
-    marginBottom: 16,
+    textAlign: 'center',
+  },
+  loadingText: {
+    marginTop: 16,
+  },
+  editButton: {
+    marginTop: 15,
+    backgroundColor: '#3180e7',
+    paddingVertical: 5,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  editButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    marginRight: 5,
+  },
+  editButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
-
-
 
 export default ProfileDisplay;

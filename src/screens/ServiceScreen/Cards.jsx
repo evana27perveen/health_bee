@@ -66,7 +66,7 @@ const Cards = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://192.168.0.106:8000/api/main/service-models/'); // Replace with your API endpoint
+      const response = await fetch('http://192.168.0.106:8000/api/main/service-models/'); 
       const data = await response.json();
       setServiceData(data);
     } catch (error) {

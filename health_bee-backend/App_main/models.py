@@ -31,16 +31,21 @@ class ServiceModel(models.Model):
 
     def __str__(self):
         return self.test_name
+    
+class ServiceCartModel(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_query_name="service_cart_user")
+    services = models.ManyToManyField(ServiceModel, related_name="added_services")
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Appointment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     collection_address = models.CharField(max_length=255)
-    service = models.ForeignKey(ServiceModel, on_delete=models.DO_NOTHING, related_query_name="service_details")
+    service = models.ForeignKey(ServiceCartModel, on_delete=models.DO_NOTHING, related_query_name="service_details")
     date = models.DateField()
     time = models.TimeField()
     status = models.CharField(max_length=20, choices=(
-        ('scheduled', 'Scheduled'), ('completed', 'Completed'), ('cancelled', 'Cancelled')))
+        ('Scheduled', 'Scheduled'), ('Completed', 'Completed'), ('Cancelled', 'Cancelled')))
 
     def __str__(self):
         return f"{self.user.patientprofile} - {self.date} {self.time}"
